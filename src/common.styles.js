@@ -11,3 +11,7 @@ export const Button = styled.button`
   text-align: center;
   font-size: 18px;
 `;
+
+export const Subtitle = styled.h4`
+  text-align: center;
+`;

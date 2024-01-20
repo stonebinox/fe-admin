@@ -21,3 +21,17 @@ export const getProfile = (profileId) =>
       profile_id: profileId,
     }),
   });
+
+export const getContractors = (profileId) =>
+  fetch(`${baseUrl}/client/contractors`, {
+    headers: new Headers({
+      profile_id: profileId,
+    }),
+  });
+
+export const getContractorJobs = (profileId, contractorId) =>
+  fetch(`${baseUrl}/contractor/${contractorId}/jobs`, {
+    headers: new Headers({
+      profile_id: profileId,
+    }),
+  });

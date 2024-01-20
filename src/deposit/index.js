@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Button } from "../common.styles";
-import { depositAmount } from "../utils/api";
 
-const Subtitle = styled.h4`
-  text-align: center;
-`;
+import { Button, Subtitle } from "../common.styles";
+import { depositAmount } from "../utils/api";
 
 const Container = styled.div`
   display: flex;

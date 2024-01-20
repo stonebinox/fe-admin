@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { Navbar } from "./navbar";
 import { Deposit } from "./deposit";
+import { Contractors } from "./contractors";
 
 const Layout = styled.div`
   width: 100%;
@@ -20,7 +21,12 @@ function App() {
         storedProfile={storedProfile}
         setStoredProfile={setStoredProfile}
       />
-      {storedProfile && <Deposit storedProfile={storedProfile} />}
+      {storedProfile && (
+        <>
+          <Deposit storedProfile={storedProfile} />
+          <Contractors storedProfile={storedProfile} />
+        </>
+      )}
     </Layout>
   );
 }
