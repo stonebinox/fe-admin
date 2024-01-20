@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { getClients } from "../utils/api";
+import { getClients, getProfile } from "../utils/api";
+import { Button } from "../common.styles";
 
 const Container = styled.div`
   width: 100%;
@@ -18,20 +19,8 @@ const OptionsContainer = styled.div`
   text-align: center;
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
-`;
-
-const Button = styled.button`
-  width: auto;
-  min-width: 100px;
-  height: auto;
-  border: 0;
-  outline: 0;
-  background-color: #111;
-  color: #efefef;
-  text-align: center;
-  font-size: 18px;
 `;
 
 const Dropdown = styled.select`
@@ -43,10 +32,9 @@ const Link = styled.a`
   text-decoration: none;
 `;
 
-export const Navbar = () => {
+export const Navbar = ({ storedProfile, setStoredProfile }) => {
   const [clients, setClients] = useState([]);
   const [selectedClient, setSelectedClient] = useState(null);
-  const [storedProfile, setStoredProfile] = useState(null);
 
   useEffect(() => {
     const getClientsList = async () => {
@@ -62,10 +50,23 @@ export const Navbar = () => {
   }, []);
 
   useEffect(() => {
+    const fetchFreshAccount = (id) =>
+      getProfile(id)
+        .then((response) => response.json())
+        .then((data) => setStoredProfile(data))
+        .catch((error) => {
+          // something wrong, we log the profile out
+          console.log(error);
+          logoutClick();
+        });
+
     if (!storedProfile && localStorage.getItem("profile")) {
       const profile = JSON.parse(localStorage.getItem("profile"));
       setStoredProfile(profile);
+
+      fetchFreshAccount(profile.id); // to ensure we grab the latest data
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [storedProfile]);
 
   const loginClick = () => {
