@@ -35,3 +35,11 @@ export const getContractorJobs = (profileId, contractorId) =>
       profile_id: profileId,
     }),
   });
+
+export const payJob = (profileId, jobId) =>
+  fetch(`${baseUrl}/jobs/${jobId}/pay`, {
+    method: "POST",
+    headers: new Headers({
+      profile_id: profileId,
+    }),
+  });

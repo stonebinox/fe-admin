@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { getContractorJobs, getContractors } from "../utils/api";
 import { Button, Subtitle } from "../common.styles";
+import { JobsList } from "../jobs-list";
 
 const Container = styled.div`
   display: flex;
@@ -21,7 +22,7 @@ const OptionsContainer = styled.select`
 export const Contractors = ({ storedProfile }) => {
   const [contractors, setContractors] = useState([]);
   const [selectedContractor, setSelectedContractor] = useState(null);
-  const [jobs, setJobs] = useState([]);
+  const [jobs, setJobs] = useState(null);
 
   useEffect(() => {
     const getContractorsForClient = () =>
@@ -41,28 +42,35 @@ export const Contractors = ({ storedProfile }) => {
 
     getContractorJobs(storedProfile.id, selectedContractor)
       .then((response) => response.json())
-      .then((data) => setJobs(jobs))
+      .then((data) => setJobs(data))
       .catch((error) => console.log(error));
   };
 
   return (
-    <Container>
-      <Subtitle>Pay jobs for</Subtitle>
-      {contractors.length > 0 && (
-        <OptionsContainer
-          onChange={(e) => setSelectedContractor(e.currentTarget.value)}
-        >
-          <option value="select">Select</option>
-          {contractors.map((contractor, i) => (
-            <option key={i} value={contractor.id}>
-              {contractor.firstName} {contractor.lastName}
-            </option>
-          ))}
-        </OptionsContainer>
-      )}
-      {selectedContractor && selectedContractor !== "select" && (
-        <Button onClick={continueClick}>Continue &gt;</Button>
-      )}
-    </Container>
+    <>
+      <Container>
+        <Subtitle>Pay jobs for</Subtitle>
+        {contractors.length > 0 && (
+          <OptionsContainer
+            onChange={(e) => setSelectedContractor(e.currentTarget.value)}
+          >
+            <option value="select">Select</option>
+            {contractors.map((contractor, i) => (
+              <option key={i} value={contractor.id}>
+                {contractor.firstName} {contractor.lastName}
+              </option>
+            ))}
+          </OptionsContainer>
+        )}
+        {selectedContractor && selectedContractor !== "select" && (
+          <Button onClick={continueClick}>Continue &gt;</Button>
+        )}
+      </Container>
+      {selectedContractor &&
+        selectedContractor !== "select" &&
+        jobs !== null && (
+          <JobsList jobsList={jobs} storedProfile={storedProfile} />
+        )}
+    </>
   );
 };
